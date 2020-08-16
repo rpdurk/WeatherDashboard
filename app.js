@@ -76,19 +76,18 @@ $(document).ready(function() {
             method: "GET"
         }).then (function(forecast) {
             console.log(forecast);
-            let forecastIndex =;
+            let forecastIndex = 0;
             // Create a for loop to dynamically render all 5 days
-            // must create a forecast length variable *******************************************************************************
-            // for (i = 0; i < forecast.length; i++);
-            //     let forecastDate = response.;
+            for (i = 0; i < 5; i++) {
                 // current weather conditions via icon*************************************************************************
-                let ForecastWeatherIcon = forecast.list[i].weather.icon;
-                let forecastTemp = (parseInt(forecast.list[i].main.temp) - 273.15) * 1.80 + 32;
-                let forecastHumidity = forecast.list[i].main.humidity;
-                console.log(forecast.list[i].weather.icon);
-                console.log((parseInt(forecast.list[i].main.temp) - 273.15) * 1.80 + 32);
-                console.log(forecast.list[i].main.humidity);
-            // Transfer content to dynamically
+                // let ForecastWeatherIcon = forecast.list[forecastIndex].weather.icon;
+                let forecastDate = forecast.list[forecastIndex].dt_txt;
+                let forecastTemp = (parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32;
+                let forecastHumidity = forecast.list[forecastIndex].main.humidity;
+                // console.log(forecast.list[forecastIndex].weather.icon);
+                console.log(forecast.list[forecastIndex].dt_txt);
+                console.log((parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32);
+                console.log(forecast.list[forecastIndex].main.humidity);
             // these lines only need to happen once!
                 // let $forecastDiv = $("<div>");
                 // $forecastDiv.addClass("container-fluid text-center weather forecast");
@@ -96,23 +95,25 @@ $(document).ready(function() {
                 // $forecastTitle.addClass("card-title fiveDayForecast text-center forecast").text("Five Day Forecast:");
                 // let $forecastRow = $("<div>");
                 // $forecastRow.addClass("row");
-                // let $forecastCol = ("<div>");
-                // $forecastCol.addClass("col");
-                // let $forecastDate = $("<h4>");
-                // // add a way to call the date
-                // $forecastDate.addClass("card-title").text();
-                // let $forecastTemp = $("<p>");
-                // $forecastTemp.addClass("card-text").text();
-                // let $forecastHumidity = $("<p>");
-                // $forecastHumidity.addClass("card-text").text();
-                // $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, /*$uvIndex, */);
-                // $cardBody.append($card);
-                // $searchCityDiv.append($cardBody);
-                // $('.cityContainer').append($searchCityDiv);
-                //     console.log("City: " + city);
-                //     console.log("Wind Speed: " + wind);
-                //     console.log("Humidity: " + humidity);
-                //     console.log("Temperature (F): " + temp);
+            //  need to be added each time! 
+                let $forecastCol = $("<div>");
+                $forecastCol.addClass("col");
+                let $forecastCard = $("<div>");
+                $forecastCard.addClass("card card-cascade wider reverse my-4 pb-5");
+                let $forecastCardBody = $("<div>");
+                $forecastCardBody.addClass("card-body card-body-cascade text-center wow fadeIn");
+                let $forecastDate = $("<h4>");
+                $forecastDate.addClass("card-title").text(forecastDate);
+                let $forecastTemp = $("<p>");
+                $forecastTemp.addClass("card-text").text(forecastTemp);
+                let $forecastHumidity = $("<p>");
+                $forecastHumidity.addClass("card-text").text(forecastHumidity);
+                $forecastDate.append($forecastTemp, /*$forecastIcon, */ $forecastHumidity);
+                $forecastCardBody.append($forecastDate);
+                $forecastCard.append($forecastCardBody);
+                $forecastCol.append($forecastCard);
+                $(".5DayForecast").append($forecastCol);
+            }
         });
-    });
+    });    
 });
