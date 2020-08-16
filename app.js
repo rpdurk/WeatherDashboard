@@ -1,49 +1,80 @@
-// jquery read function
 $(document).ready(function() {    
     // API key stored in a variable for easier access
+    // $(".weather").hide();
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
     // create function that begins on click
-    $("#search").on("click", function () {
+    $(".search").on("submit", function () {
         // set variables for easier ability to create values
-        let city = $("#cityChoice").val();
-        // if possible, add country and zip code!
+        // $(".weather").show();
+        var city = $("#city").val();
+            //*************************************** */ if possible, add country and zip code!
         // let country =$("#countryChoice").val();
         // let zip =$("#zip").val();
         // the URL stored in a variable for easier access
-        var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country},${zip}&appid=${APIkey}`
+        var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`
     // Do an ajax request using the URL variable
     $.ajax({
         url: queryURL,
         method: "GET"
-    })// Store all of the retrieved data inside of an object called "response"
-        .then(function(response) {
-        // Log the resulting object
+        // Store all of the retrieved data inside of an object called "response"
+    }).then (function(response) {
         console.log(response);
         // create several variables which will need to be called
-        // city
-        var city = response.name;
-        // current weather conditions
-        // city name,the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+            // city response
+            var city = response.name;
+            // todays date
+            // var todaysDate = moment().format("MMM Do YY").val();
+            // current weather conditions via icon
+            var weatherIcon = response.weather.icon;
+            // temp in F.
+            var temp = (parseInt(response.main.temp) - 273.15) * 1.80 + 32;
+            // humidity
+            var humidity = response.main.humidity;
+            // wind speed
+            var wind = response.wind.speed;
+            // var UV index
+            // var uvIndex = response.
         // UV index - states severity of the UV Index by color warning
-        // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-        var wind = response.wind.speed;
-        var humidity = response.main.humidity;
-        var temp = (parseInt(response.main.temp) - 273.15) * 1.80 + 32;
-        // Transfer content to HTML
-        $(".city").html("<h1>" + response.name + " Weather Details</h1>");
-        $(".wind").text("Wind Speed: " + response.wind.speed);
-        $(".humidity").text("Humidity: " + response.main.humidity);
+        
+        // Transfer content to dynamically
+            // var $card = $("<div>").addClass("card card-cascade wider reverse my-4 pb-5");
+            
+            let $searchCityDiv = $("#searchCityDiv");
+            $searchCityDiv.addClass("container-fluid text-center").attr("id", "searchCityDiv");
+            let $cardBody = $("<div>");
+            $cardBody.addClass("card-body card-body-cascade text-center wow fadeIn cityWeather").attr("data-wow-delay", "0.2s");
+
+           let $cityName= $("<h3>");
+            $cityName.addClass("card-title cityName").text(`City: ${city}`);
+           let $temp = $("<p>");
+            $temp.addClass("card-text temp").text(`Humidity: ${humidity}%`);
+           let $humidity = $("<p>");
+            $humidity.addClass("card-text humidity").text(`Humidity: ${humidity}%`);
+           let $wind = ("<p>");
+            $wind.addClass("card-text wind").text(`Wind Speed: ${wind} m/h`);
+            // $cardBody.append($("<h4>").addClass("card-title date").text(date));
+           $cardBody.append($cityName, $temp, $humidity, $wind);
+            $searchCityDiv.append($cardBody);
+            $('.cityContainer').append($searchCityDiv);
+                console.log($cardBody);
+                console.log("City: " + city);
+                console.log("Wind Speed: " + wind);
+                console.log("Humidity: " + humidity);
+                console.log("Temperature (F): " + temp);
+        // $(".date").text(todaysDate);
+        // $(".temp").text(temp);
+        // $(".humidity").text(humidity);
+        // $(".wind").text(wind);
         // Convert the temp to fahrenheit
         // var tempF = (response.main.temp - 273.15) * 1.80 + 32;
         // add temp content to html
-        $(".temp").text("Temperature (K) " + response.main.temp);
-        $(".tempF").text("Temperature (F) " + tempF.toFixed(2));
+        // $(".temp").text("Temperature (K) " + response.main.temp);
+        // $(".tempF").text("Temperature (F) " + tempF.toFixed(2));
         // Log the data in the console as well
-        console.log("Wind Speed: " + response.wind.speed);
-        console.log("Humidity: " + response.main.humidity);
-        console.log("Temperature (F): " + response.main.temp);
-        }); 
         
+        }); 
+        // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
+
         // search history
         // current and future conditions for that city
         // open the weather dashboard
@@ -65,5 +96,6 @@ $(document).ready(function() {
         // $artistDiv.append($('<h1>').append("Number of fans tracking the " + artist + " " + response.tracker_count));
         // $artistDiv.append($('<h1>').append("Number of upcoming events =" + " " + response.upcoming_event_count));
         // $artistDiv.append($('<a>').attr("href", response.url).append(artist));
-        // });       
+        // });   
+    });    
 });
