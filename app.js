@@ -43,7 +43,6 @@ $(document).ready(function() {
             $searchCityDiv.addClass("container-fluid text-center").attr("id", "searchCityDiv");
             let $cardBody = $("<div>");
             $cardBody.addClass("card-body card-body-cascade text-center wow fadeIn cityWeather").attr("data-wow-delay", "0.2s");
-
            let $cityName= $("<h3>");
             $cityName.addClass("card-title cityName").text(`City: ${city}`);
            let $temp = $("<p>");
