@@ -35,6 +35,7 @@ $(document).ready(function() {
                const lon = response.coord.lon;
                const lat = response.coord.lat;
                var uvIndexValue =  uvIndexFunction(lat, lon);
+               console.log(uvIndexValue);
             // UV index - states severity of the UV Index by color warning
             
             // Transfer content to dynamically
@@ -87,7 +88,9 @@ $(document).ready(function() {
     // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
     $(".search").on("submit", function (event) {
 
-        event.preventDefault()
+        event.preventDefault();
+        $(".5DayForecast").empty();
+        $(".cityContainer").empty();
         var city = $("#city").val();
         var queryURLForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKey}`
         $.ajax({
