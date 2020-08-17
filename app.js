@@ -3,8 +3,6 @@ $(document).ready(function() {
     // $(".weather").hide();
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
     // create function that begins on click
-    let lat;
-    let lon;
     $(".search").on("submit", function (event) {
         event.preventDefault()
         // set variables for easier ability to create values
@@ -34,11 +32,9 @@ $(document).ready(function() {
                 var humidity = response.main.humidity;
                 // wind speed
                 var wind = response.wind.speed;
-                uvIndexFunction();
-                let lon = response.coord.lon;
-                let lat = response.coord.lat;
-                // var UV index
-                // var uvIndex = response.
+               const lon = response.coord.lon;
+               const lat = response.coord.lat;
+               const uvIndexValue =  uvIndexFunction(lat, lon);
             // UV index - states severity of the UV Index by color warning
             
             // Transfer content to dynamically
@@ -59,7 +55,7 @@ $(document).ready(function() {
                 let $wind = $("<p>");
                 $wind.addClass("card-text wind").text(`Wind Speed: ${wind} m/h`);
                 let $uvIndex = $("<p>");
-                $uvIndex.addClass("card-title uvIndex").text(`UV Index ${uvIndex}`);
+                $uvIndex.addClass("card-text uvIndex").text(`UV Index ${uvIndexValue}`);
                 $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, $uvIndex);
                 $cardBody.append($card);
                 $searchCityDiv.append($cardBody);
@@ -74,23 +70,16 @@ $(document).ready(function() {
         });
     });     
 
-    function uvIndexFunction() {
+    function uvIndexFunction(lat, lon) {
         // event.preventDefault()
-        let lon;
-        let lat;
         var queryURLData = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exlclude={part}&appid=${APIKey}`
         $.ajax({
             url: queryURLData,
             method: "GET"
         }).then (function(data) {
             let uvIndex = data.current.uvi;
-            // let $uvIndex = $("<p>");
-            // $uvIndex.addClass("card-title uvIndex").text(`UV Index ${uvIndex}`);
-            // $card.append($uvIndex);
-            // $cardBody.append($card);
-            // $searchCityDiv.append($cardBody);
-            // $('.cityContainer').append($searchCityDiv);
-            console.log("UV: " + UVIndex);
+            console.log("UV: " + uvIndex);
+            return uvIndex;
             // UV index - states severity of the UV Index by color warning
         });
     }   
