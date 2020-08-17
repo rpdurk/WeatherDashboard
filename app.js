@@ -3,6 +3,8 @@ $(document).ready(function() {
     // $(".weather").hide();
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
     // create function that begins on click
+    let lat;
+    let lon;
     $(".search").on("submit", function (event) {
         event.preventDefault()
         // set variables for easier ability to create values
@@ -32,6 +34,9 @@ $(document).ready(function() {
                 var humidity = response.main.humidity;
                 // wind speed
                 var wind = response.wind.speed;
+                uvIndexFunction();
+                let lon = response.coord.lon;
+                let lat = response.coord.lat;
                 // var UV index
                 // var uvIndex = response.
             // UV index - states severity of the UV Index by color warning
@@ -53,9 +58,9 @@ $(document).ready(function() {
                 $humidity.addClass("card-text humidity").text(`Humidity: ${humidity}%`);
                 let $wind = $("<p>");
                 $wind.addClass("card-text wind").text(`Wind Speed: ${wind} m/h`);
-                // let $uvIndex = $("<p>");
-                // $uvIndex.addClass("card-title uvIndex").text(`UV Index ${uvIndex}`);
-                $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, /*$uvIndex, */);
+                let $uvIndex = $("<p>");
+                $uvIndex.addClass("card-title uvIndex").text(`UV Index ${uvIndex}`);
+                $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, $uvIndex);
                 $cardBody.append($card);
                 $searchCityDiv.append($cardBody);
                 $('.cityContainer').append($searchCityDiv);
@@ -63,11 +68,37 @@ $(document).ready(function() {
                     // console.log("Wind Speed: " + wind);
                     // console.log("Humidity: " + humidity);
                     // console.log("Temperature (F): " + temp);
+                    console.log(lon);
+                    console.log(lat);
+                
         });
     });     
 
+    function uvIndexFunction() {
+        // event.preventDefault()
+        let lon;
+        let lat;
+        var queryURLData = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exlclude={part}&appid=${APIKey}`
+        $.ajax({
+            url: queryURLData,
+            method: "GET"
+        }).then (function(data) {
+            let uvIndex = data.current.uvi;
+            // let $uvIndex = $("<p>");
+            // $uvIndex.addClass("card-title uvIndex").text(`UV Index ${uvIndex}`);
+            // $card.append($uvIndex);
+            // $cardBody.append($card);
+            // $searchCityDiv.append($cardBody);
+            // $('.cityContainer').append($searchCityDiv);
+            console.log("UV: " + UVIndex);
+            // UV index - states severity of the UV Index by color warning
+        });
+    }   
+
+
     // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
     $(".search").on("submit", function (event) {
+
         event.preventDefault()
         var city = $("#city").val();
         var queryURLForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKey}`
@@ -85,9 +116,6 @@ $(document).ready(function() {
                 let forecastTemp = (parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32;
                 let forecastHumidity = forecast.list[forecastIndex].main.humidity;
                 // console.log(forecast.list[forecastIndex].weather.icon);
-                console.log(forecast.list[forecastIndex].dt_txt);
-                console.log((parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32);
-                console.log(forecast.list[forecastIndex].main.humidity);
             // these lines only need to happen once!
                 // let $forecastDiv = $("<div>");
                 // $forecastDiv.addClass("container-fluid text-center weather forecast");
@@ -105,9 +133,9 @@ $(document).ready(function() {
                 let $forecastDate = $("<h4>");
                 $forecastDate.addClass("card-title").text(forecastDate);
                 let $forecastTemp = $("<p>");
-                $forecastTemp.addClass("card-text").text(forecastTemp);
+                $forecastTemp.addClass("card-text").text(`Temperature: ${forecastTemp.toFixed(2)} F`);
                 let $forecastHumidity = $("<p>");
-                $forecastHumidity.addClass("card-text").text(forecastHumidity);
+                $forecastHumidity.addClass("card-text").text(`Humidity: ${forecastHumidity}%`);
                 $forecastDate.append($forecastTemp, /*$forecastIcon, */ $forecastHumidity);
                 $forecastCardBody.append($forecastDate);
                 $forecastCard.append($forecastCardBody);
