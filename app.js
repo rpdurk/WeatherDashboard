@@ -6,7 +6,6 @@ $(document).ready(function() {
     $(".search").on("submit", function (event) {
         event.preventDefault()
         // set variables for easier ability to create values
-        // $(".forecast").show();
         var city = $("#city").val();
             //*************************************** */ if possible, add country and zip code!
         // let country =$("#countryChoice").val();
@@ -24,8 +23,6 @@ $(document).ready(function() {
                 var city = response.name;
                 // todays date
                 // var todaysDate = moment().format("MMM Do YY").val();
-                // current weather conditions via icon*************************************************************************
-                var weatherIcon = response.weather.icon;
                 // temp in F.
                 var temp = (parseInt(response.main.temp) - 273.15) * 1.80 + 32;
                 // humidity
@@ -68,6 +65,16 @@ $(document).ready(function() {
                     // console.log(lon);
                     // console.log(lat);
             // Attempt to render searched cities onto the screen
+            // ********************************************************************************************
+                let $buttonToolbar = $("<div>");
+                $buttonToolbar.addClass("btn-toolbar justify-content-center").attr("role", "toolbar").attr("aria-label", "Toolbar with button groups");
+                let $buttonGroup = $("<div>");
+                $buttonGroup.addClass("btn-group mr-2").attr("role", "group").attr("aria-label", "First group");
+                let $searchedCityBtn = $("<btn>");
+                $searchedCityBtn.attr("type", "button").addClass("btn btn-info").text(`${city}`)
+                $buttonGroup.append($searchedCityBtn);
+                $buttonToolbar.append($buttonGroup);
+                $(".mainSearch").append($buttonToolbar);
         });
     });     
 
