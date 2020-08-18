@@ -67,7 +67,7 @@ $(document).ready(function () {
         }).then(function (response) {
             // create several variables which will need to be called
             // city response
-            // var cityName = response.name;
+            var city = response.name;
             // todays date
             // var todaysDate = moment().format("MMM Do YY").val();
             // temp in F.
@@ -90,7 +90,7 @@ $(document).ready(function () {
             let $cardBody = $("<div>");
             $cardBody.addClass("card-body card-body-cascade text-center wow fadeIn cityWeather").attr("data-wow-delay", "0.2s");
             let $cityName = $("<h3>");
-            $cityName.addClass("card-title cityName").text(`City: ${cityName}`);
+            $cityName.addClass("card-title cityName").text(`City: ${city}`);
             // let $todaysDate = $("<h5>");
             // $todaysDate.addClass("card-title date").text(` ${todaysDate}`);
             let $temp = $("<p>");
