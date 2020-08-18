@@ -109,13 +109,13 @@ $(document).ready(function() {
                 // current weather conditions via icon*************************************************************************
                 let forecastWeatherIcon = forecast.list[forecastIndex].weather[forecastIndex].icon;
                 let forecastIconDescription = forecast.list[forecastIndex].weather[forecastIndex].description;
-                // let forecastWeatherURL = `http://openweathermap.org/img/wn/${forecastWeatherIcon}@2x.png`
+                let forecastWeatherURL = `http://openweathermap.org/img/wn/${forecastWeatherIcon}@2x.png`
                 let forecastDate = forecast.list[forecastIndex].dt_txt;
                 let forecastTemp = (parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32;
                 let forecastHumidity = forecast.list[forecastIndex].main.humidity;
-                console.log(forecast.list[forecastIndex].weather.icon);
-                // console.log(forecastWeatherURL);
-                console.log(forecastIconDescription);
+                // console.log(forecast.list[forecastIndex].weather.icon);
+                console.log(forecastWeatherURL);
+                // console.log(forecastIconDescription);
             
             //  need to be added each time! 
                 let $forecastCol = $("<div>");
@@ -127,15 +127,15 @@ $(document).ready(function() {
                 let $forecastDate = $("<h4>");
                 $forecastDate.addClass("card-title").text(forecastDate);
 
-                // let $forecastWeatherIconLink = $('<span>');
-                // $forecastWeatherIconLink.append($('<img>').attr('href', forecastWeatherURL));
+                let $forecastWeatherIconLink = $('<span>');
+                $forecastWeatherIconLink.append($('<img>').attr('src', forecastWeatherURL));
                 let $forecastIconDescription= $("<p>");
                 $forecastIconDescription.addClass("card-text").text(`${forecastIconDescription}`);
                 let $forecastTemp= $("<p>");
                 $forecastTemp.addClass("card-text").text(`Temperature: ${forecastTemp.toFixed(2)} F`);
                 let $forecastHumidity = $("<p>");
                 $forecastHumidity.addClass("card-text").text(`Humidity: ${forecastHumidity}%`);
-                $forecastDate.append($forecastIconDescription, $forecastTemp, $forecastHumidity);
+                $forecastDate.append($forecastIconDescription, $forecastWeatherIconLink, $forecastTemp, $forecastHumidity);
                 $forecastCardBody.append($forecastDate);
                 $forecastCard.append($forecastCardBody);
                 $forecastCol.append($forecastCard);
