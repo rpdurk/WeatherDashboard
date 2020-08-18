@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    // API key stored in a variable for easier access
+    // hide the forecast
     $(".forecast").hide();
     // place to store Locations for local storage
     var locations = [];
@@ -7,19 +7,13 @@ $(document).ready(function () {
     init();
     // turns local storage into buttons
     function renderSearchedCities() {
-        if (locations.length > 6) {
+        if (locations.length > 4) {
             locations.shift();
         }
         for (var i = 0; i < locations.length; i++) {
-            let $buttonToolbar = $("<div>");
-            $buttonToolbar.addClass("btn-toolbar justify-content-center").attr("role", "toolbar").attr("aria-label", "Toolbar with button groups");
-            let $buttonGroup = $("<div>");
-            $buttonGroup.addClass("btn-group mr-2").attr("role", "group").attr("aria-label", "First group");
             let $searchedCityBtn = $("<btn>");
-            $searchedCityBtn.attr("type", "button").attr("data-city", [i]).addClass("btn btn-info locationHistory").text(locations);
-            $buttonGroup.append($searchedCityBtn);
-            $buttonToolbar.append($buttonGroup);
-            $(".mainSearch").append($buttonToolbar);
+            $searchedCityBtn.attr("type", "button").attr("data-city", [i]).addClass("btn btn-info locationHistory").text(locations[i]);
+            $(".btnSearchHistory").append($searchedCityBtn);
         }
     }
     // Checks Local Storage
@@ -31,6 +25,7 @@ $(document).ready(function () {
         renderSearchedCities();
     };
 
+    // API key stored in a variable for easier access
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
     // create function that begins on click
     $(".search").on("submit", function (event) {
@@ -48,7 +43,6 @@ $(document).ready(function () {
         //*************************************** */ if possible, add country and zip code!
         // let country =$("#countryChoice").val();
         // let zip =$("#zip").val();
-
 
         // the URL stored in a variable for easier access
         var queryURLWeather = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKey}`
@@ -106,20 +100,6 @@ $(document).ready(function () {
             // console.log(lon);
             // console.log(lat);
             // Attempt to have local storage
-
-
-            // Attempt to render searched cities onto the screen
-            // let $buttonToolbar = $("<div>");
-            // $buttonToolbar.addClass("btn-toolbar justify-content-center").attr("role", "toolbar").attr("aria-label", "Toolbar with button groups");
-            // let $buttonGroup = $("<div>");
-            // $buttonGroup.addClass("btn-group mr-2").attr("role", "group").attr("aria-label", "First group");
-            // let $searchedCityBtn = $("<btn>");
-            // $searchedCityBtn.attr("type", "button").attr("data-city" , `${cityName}`).addClass("btn btn-info").text(`${cityName}`)
-            // $buttonGroup.append($searchedCityBtn);
-            // $buttonToolbar.append($buttonGroup);
-            // $(".mainSearch").append($buttonToolbar);
-            // Check local storage
-            // if ();
         });
     });
 
@@ -207,20 +187,6 @@ $(document).ready(function () {
                 $(".5DayForecast").append($forecastCol);
                 $(".forecast").show();
             }
-            // these lines only need to happen once!
-            // let $forecastDiv = $("<div>");
-            // $forecastDiv.addClass("container-fluid text-center weather forecast");
-            // let $forecastTitle = $("<h3>");
-            // $forecastTitle.addClass("card-title fiveDayForecast text-center forecast").text("Five Day Forecast:");
-            // let $forecastRow = $("<div>");
-            // $forecastRow.addClass("row");
-            // $forecastTitle.append($forecastDiv);
-            // $forecastRow.append($forecastTitle);
         });
     });
-
-    // $(".locationHistory").on("click", { 
-    //     let locations = cities
-    //     search();
-    // });
 });
