@@ -68,11 +68,6 @@ $(document).ready(function() {
                     // console.log(lon);
                     // console.log(lat);
             // Attempt to render searched cities onto the screen
-
-
-
-
-
         });
     });     
 
@@ -90,7 +85,6 @@ $(document).ready(function() {
         });
     }   
 
-
     // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
     $(".search").on("submit", function (event) {
         event.preventDefault();
@@ -102,7 +96,7 @@ $(document).ready(function() {
             url: queryURLForecast,
             method: "GET"
         }).then (function(forecast) {
-            console.log(forecast);
+            // console.log(forecast);
             let forecastIndex = 0;
             // Create a for loop to dynamically render all 5 days
             for (i = 0; i < 5; i++) {
@@ -113,28 +107,28 @@ $(document).ready(function() {
                 let forecastDate = forecast.list[forecastIndex].dt_txt;
                 let forecastTemp = (parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32;
                 let forecastHumidity = forecast.list[forecastIndex].main.humidity;
+                
                 // console.log(forecast.list[forecastIndex].weather.icon);
-                console.log(forecastWeatherURL);
+                // console.log(forecastWeatherURL);
                 // console.log(forecastIconDescription);
             
             //  need to be added each time! 
                 let $forecastCol = $("<div>");
                 $forecastCol.addClass("col");
                 let $forecastCard = $("<div>");
-                $forecastCard.addClass("card card-cascade wider reverse my-4 pb-5");
+                $forecastCard.addClass("card card-cascade wider reverse my-4");
                 let $forecastCardBody = $("<div>");
-                $forecastCardBody.addClass("card-body card-body-cascade text-center wow fadeIn");
+                $forecastCardBody.addClass("card-body card-body-cascade text-center wow fadeIn primary-color");
                 let $forecastDate = $("<h4>");
-                $forecastDate.addClass("card-title").text(forecastDate);
-
+                $forecastDate.addClass("card-title text-white").text(forecastDate);
                 let $forecastWeatherIconLink = $('<span>');
                 $forecastWeatherIconLink.append($('<img>').attr('src', forecastWeatherURL));
                 let $forecastIconDescription= $("<p>");
-                $forecastIconDescription.addClass("card-text").text(`${forecastIconDescription}`);
+                $forecastIconDescription.addClass("card-text text-white").text(`${forecastIconDescription}`);
                 let $forecastTemp= $("<p>");
-                $forecastTemp.addClass("card-text").text(`Temperature: ${forecastTemp.toFixed(2)} F`);
+                $forecastTemp.addClass("card-text text-white").text(`Temperature: ${forecastTemp.toFixed(2)} F`);
                 let $forecastHumidity = $("<p>");
-                $forecastHumidity.addClass("card-text").text(`Humidity: ${forecastHumidity}%`);
+                $forecastHumidity.addClass("card-text text-white").text(`Humidity: ${forecastHumidity}%`);
                 $forecastDate.append($forecastIconDescription, $forecastWeatherIconLink, $forecastTemp, $forecastHumidity);
                 $forecastCardBody.append($forecastDate);
                 $forecastCard.append($forecastCardBody);
