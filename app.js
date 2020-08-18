@@ -39,7 +39,7 @@ $(document).ready(function() {
                 let $searchCityDiv = $("<div>")//$("#searchCityDiv");
                 $searchCityDiv.addClass("container-fluid text-center").attr("id", "searchCityDiv");
                 let $card = $("<div>");
-                $card.addClass("card card-cascade wider reverse my-4 pb-5");
+                $card.addClass("card card-cascade wider reverse my-4 pb-5 weatherFacts");
                 let $cardBody = $("<div>");
                 $cardBody.addClass("card-body card-body-cascade text-center wow fadeIn cityWeather").attr("data-wow-delay", "0.2s");
                 let $cityName = $("<h3>");
@@ -52,9 +52,10 @@ $(document).ready(function() {
                 $humidity.addClass("card-text humidity").text(`Humidity: ${humidity}%`);
                 let $wind = $("<p>");
                 $wind.addClass("card-text wind").text(`Wind Speed: ${wind} m/h`);
-                let $uvIndex = $("<p>");
-                $uvIndex.addClass("card-text uvIndex").text(`UV Index ${uvIndexValue}`);
-                $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, $uvIndex);
+                // let $uvIndex = $("<p>");
+                // $uvIndex.addClass("card-text uvIndex"); 
+                // $uvIndex.addClass("card-text uvIndex").text(`UV Index ${uvIndexValue}`); ***********original Line*****
+                $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, /*$uvIndex*/);
                 $cardBody.append($card);
                 $searchCityDiv.append($cardBody);
                 $('.cityContainer').append($searchCityDiv);
@@ -75,6 +76,7 @@ $(document).ready(function() {
                 $buttonGroup.append($searchedCityBtn);
                 $buttonToolbar.append($buttonGroup);
                 $(".mainSearch").append($buttonToolbar);
+                // uvIndexFunction();
         });
     });     
 
@@ -86,9 +88,28 @@ $(document).ready(function() {
             method: "GET"
         }).then (function(data) {
             let uvIndex = data.current.uvi;
-            console.log("UV: " + uvIndex);
-            return uvIndex;
+            // console.log("UV: " + uvIndex);
+            let $uvIndex = $("<p>");
+            $uvIndex.addClass("card-text uvIndex"); 
+            $(".weatherFacts").append($uvIndex);
             // UV index - states severity of the UV Index by color warning
+            if (uvIndex > 0.01 & uvIndex < 3) {
+                //color turn green 
+                $uvIndex.addClass('success-color').text(`${"UV Index: " + uvIndex}`);
+            } else if (uvIndex > 3 & uvIndex < 6) {
+                // color turns yellow 
+                $uvIndex.addClass('yellow accent-1').text(`${"UV Index: " + uvIndex}`);
+            } else if (uvIndex > 6  & uvIndex < 8) {
+                // color turns orange 
+                $uvIndex.addClass('warning-color').text(`${"UV Index: " + uvIndex}`);
+            } else if (uvIndex > 8 & uvIndex < 11) {
+                // color turns red 
+                $uvIndex.addClass('danger-color').text(`${"UV Index: " + uvIndex}`);
+            } else if (uvIndex > 11) {
+                // color turns purple 
+                $uvIndex.addClass('secondary-color').text(`${"UV Index: " + uvIndex}`);
+            }
+            return uvIndex;
         });
     }   
 
