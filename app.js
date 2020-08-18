@@ -65,8 +65,14 @@ $(document).ready(function() {
                     // console.log("Wind Speed: " + wind);
                     // console.log("Humidity: " + humidity);
                     // console.log("Temperature (F): " + temp);
-                    console.log(lon);
-                    console.log(lat);
+                    // console.log(lon);
+                    // console.log(lat);
+            // Attempt to render searched cities onto the screen
+
+
+
+
+
         });
     });     
 
@@ -87,7 +93,6 @@ $(document).ready(function() {
 
     // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
     $(".search").on("submit", function (event) {
-
         event.preventDefault();
         $(".5DayForecast").empty();
         $(".cityContainer").empty();
@@ -102,14 +107,14 @@ $(document).ready(function() {
             // Create a for loop to dynamically render all 5 days
             for (i = 0; i < 5; i++) {
                 // current weather conditions via icon*************************************************************************
-                let forecastWeatherIcon = forecast.list[forecastIndex].weather.icon;
-                let forecastWeatherURL = `http://openweathermap.org/img/wn/${forecastWeatherIcon}@2x.png`
-                let forecastIconDescription = forecast.list[forecastIndex].weather.description;
+                let forecastWeatherIcon = forecast.list[forecastIndex].weather[forecastIndex].icon;
+                let forecastIconDescription = forecast.list[forecastIndex].weather[forecastIndex].description;
+                // let forecastWeatherURL = `http://openweathermap.org/img/wn/${forecastWeatherIcon}@2x.png`
                 let forecastDate = forecast.list[forecastIndex].dt_txt;
                 let forecastTemp = (parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32;
                 let forecastHumidity = forecast.list[forecastIndex].main.humidity;
                 console.log(forecast.list[forecastIndex].weather.icon);
-                console.log(forecastWeatherURL);
+                // console.log(forecastWeatherURL);
                 console.log(forecastIconDescription);
             
             //  need to be added each time! 
@@ -122,16 +127,15 @@ $(document).ready(function() {
                 let $forecastDate = $("<h4>");
                 $forecastDate.addClass("card-title").text(forecastDate);
 
-                let $forecastWeatherIconLink = $('<span>');
-                $forecastWeatherIconLink.append($('<a>').attr('href', forecastWeatherURL).text(forecastIconDescription));
-
-                // let $link = $('<span>').text('Link: ').append($('<a>').attr('href', forecastWeatherURL).text(response.response.docs[i].web_url));
-
+                // let $forecastWeatherIconLink = $('<span>');
+                // $forecastWeatherIconLink.append($('<img>').attr('href', forecastWeatherURL));
+                let $forecastIconDescription= $("<p>");
+                $forecastIconDescription.addClass("card-text").text(`${forecastIconDescription}`);
                 let $forecastTemp= $("<p>");
                 $forecastTemp.addClass("card-text").text(`Temperature: ${forecastTemp.toFixed(2)} F`);
                 let $forecastHumidity = $("<p>");
                 $forecastHumidity.addClass("card-text").text(`Humidity: ${forecastHumidity}%`);
-                $forecastDate.append($forecastTemp, forecastWeatherIcon, $forecastHumidity);
+                $forecastDate.append($forecastIconDescription, $forecastTemp, $forecastHumidity);
                 $forecastCardBody.append($forecastDate);
                 $forecastCard.append($forecastCardBody);
                 $forecastCol.append($forecastCard);
