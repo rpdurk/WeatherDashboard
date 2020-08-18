@@ -1,17 +1,55 @@
 $(document).ready(function() {    
     // API key stored in a variable for easier access
     $(".forecast").hide();
+    // place to store Locations for local storage
+    var locations = [];
+    // function to begin local storage
+    init();
+    // turns local storage into buttons
+    function renderSearchedCities() {
+        if (locations.length > 6) {
+            locations.shift();
+        }
+        for (var i = 0; i < locations.length; i++) {
+            let $buttonToolbar = $("<div>");
+            $buttonToolbar.addClass("btn-toolbar justify-content-center").attr("role", "toolbar").attr("aria-label", "Toolbar with button groups");
+            let $buttonGroup = $("<div>");
+            $buttonGroup.addClass("btn-group mr-2").attr("role", "group").attr("aria-label", "First group");
+            let $searchedCityBtn = $("<btn>");
+            $searchedCityBtn.attr("type", "button").attr("data-city" , [i]).addClass("btn btn-info").text(locations);
+            $buttonGroup.append($searchedCityBtn);
+            $buttonToolbar.append($buttonGroup);
+            $(".mainSearch").append($buttonToolbar);
+        }
+    }
+    // Checks Local Storage
+    function init() {
+        let storedLocations =JSON.parse(localStorage.getItem("locations"));
+     if (storedLocations !== null) {
+        locations = storedLocations;
+    }
+        renderSearchedCities();
+    };
+    
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
     // create function that begins on click
     $(".search").on("submit", function (event) {
         event.preventDefault()
         // set variables for easier ability to create values
-        var city = $("#city").val();
+        var cityName = $("#city").val();
+
+        // adds search history to buttons
+        let locationsHistory = $("#city").val();
+        if (locationsHistory === ""){
+            return;
+        };
+        locations.push(locationsHistory);
+        localStorage.setItem("locations", JSON.stringify(locations));
             //*************************************** */ if possible, add country and zip code!
         // let country =$("#countryChoice").val();
         // let zip =$("#zip").val();
         // the URL stored in a variable for easier access
-        var queryURLWeather = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKey}`
+        var queryURLWeather = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKey}`
         // Do an ajax request using the URL variable
         $.ajax({
             url: queryURLWeather,
@@ -20,7 +58,7 @@ $(document).ready(function() {
         }).then (function(response) {
             // create several variables which will need to be called
                 // city response
-                var city = response.name;
+                var cityName = response.name;
                 // todays date
                 // var todaysDate = moment().format("MMM Do YY").val();
                 // temp in F.
@@ -43,7 +81,7 @@ $(document).ready(function() {
                 let $cardBody = $("<div>");
                 $cardBody.addClass("card-body card-body-cascade text-center wow fadeIn cityWeather").attr("data-wow-delay", "0.2s");
                 let $cityName = $("<h3>");
-                $cityName.addClass("card-title cityName").text(`City: ${city}`);
+                $cityName.addClass("card-title cityName").text(`City: ${cityName}`);
                 // let $todaysDate = $("<h5>");
                 // $todaysDate.addClass("card-title date").text(` ${todaysDate}`);
                 let $temp = $("<p>");
@@ -65,18 +103,21 @@ $(document).ready(function() {
                     // console.log("Temperature (F): " + temp);
                     // console.log(lon);
                     // console.log(lat);
+            // Attempt to have local storage
+
+
             // Attempt to render searched cities onto the screen
-            // ********************************************************************************************
-                let $buttonToolbar = $("<div>");
-                $buttonToolbar.addClass("btn-toolbar justify-content-center").attr("role", "toolbar").attr("aria-label", "Toolbar with button groups");
-                let $buttonGroup = $("<div>");
-                $buttonGroup.addClass("btn-group mr-2").attr("role", "group").attr("aria-label", "First group");
-                let $searchedCityBtn = $("<btn>");
-                $searchedCityBtn.attr("type", "button").addClass("btn btn-info").text(`${city}`)
-                $buttonGroup.append($searchedCityBtn);
-                $buttonToolbar.append($buttonGroup);
-                $(".mainSearch").append($buttonToolbar);
-                // uvIndexFunction();
+                // let $buttonToolbar = $("<div>");
+                // $buttonToolbar.addClass("btn-toolbar justify-content-center").attr("role", "toolbar").attr("aria-label", "Toolbar with button groups");
+                // let $buttonGroup = $("<div>");
+                // $buttonGroup.addClass("btn-group mr-2").attr("role", "group").attr("aria-label", "First group");
+                // let $searchedCityBtn = $("<btn>");
+                // $searchedCityBtn.attr("type", "button").attr("data-city" , `${cityName}`).addClass("btn btn-info").text(`${cityName}`)
+                // $buttonGroup.append($searchedCityBtn);
+                // $buttonToolbar.append($buttonGroup);
+                // $(".mainSearch").append($buttonToolbar);
+                // Check local storage
+                // if ();
         });
     });     
 
@@ -118,8 +159,8 @@ $(document).ready(function() {
         event.preventDefault();
         $(".5DayForecast").empty();
         $(".cityContainer").empty();
-        var city = $("#city").val();
-        var queryURLForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKey}`
+        var cityName = $("#city").val();
+        var queryURLForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${APIKey}`
         $.ajax({
             url: queryURLForecast,
             method: "GET"
