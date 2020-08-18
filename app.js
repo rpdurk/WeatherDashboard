@@ -12,7 +12,7 @@ $(document).ready(function () {
         }
         for (var i = 0; i < locations.length; i++) {
             let $searchedCityBtn = $("<btn>");
-            $searchedCityBtn.attr("type", "button").attr("data-city", [i]).addClass("btn btn-info locationHistory").text(locations[i]);
+            $searchedCityBtn.attr("type", "button").attr("data-city", locations[i]).addClass("btn btn-info locationHistory").text(locations[i]);
             $(".btnSearchHistory").append($searchedCityBtn);
         }
     }
@@ -28,35 +28,38 @@ $(document).ready(function () {
 
     // create function that begins on click - will call various APIs and render information on screen
     $(".search").on("submit", function () {
-        preventDefault();
+        // must have event because preventDefault is a method
+        // by console logging this, you will see the event
+        event.preventDefault();
         var cityName = $("#city").val();
+        // console.log(cityName);
         obtainWeather(cityName);
-        uvIndexFunction(cityName);
         obtainForecast(cityName);
-        console.log(obtainWeather());
-        console.log(uvIndexFunction());
-        console.log(obtainForecast());
+    });
+
+     // create function that begins on click - will call various APIs and render information on screen
+     $(".btnSearchHistory").on("click", (".locationHistory"), function () {
+        event.preventDefault();
+        var cityName = $(this).attr("data-city");
+        obtainWeather(cityName);
+        obtainForecast(cityName);
     });
 
     // API key stored in a variable for easier access
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
 
     function obtainWeather(cityName) {
-        // event.preventDefault()
-        // set variables for easier ability to create values
-        // var cityName = $("#city").val();
-
         // adds search history to buttons
-        let locationsHistory = $("#city").val();
-        if (locationsHistory === "") {
-            return;
-        };
+        let locationsHistory = cityName;
+        // Attempt to add future function that returns if empty string
+        // if (locationsHistory === "") {
+        //     return;
+        // };
         locations.push(locationsHistory);
         localStorage.setItem("locations", JSON.stringify(locations));
         //*************************************** */ if possible, add country and zip code!
         // let country =$("#countryChoice").val();
         // let zip =$("#zip").val();
-
         // the URL stored in a variable for easier access
         var queryURLWeather = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${APIKey}`
         // Do an ajax request using the URL variable
@@ -99,10 +102,7 @@ $(document).ready(function () {
             $humidity.addClass("card-text humidity").text(`Humidity: ${humidity}%`);
             let $wind = $("<p>");
             $wind.addClass("card-text wind").text(`Wind Speed: ${wind} m/h`);
-            // let $uvIndex = $("<p>");
-            // $uvIndex.addClass("card-text uvIndex"); 
-            // $uvIndex.addClass("card-text uvIndex").text(`UV Index ${uvIndexValue}`); ***********original Line*****
-            $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind, /*$uvIndex*/);
+            $card.append($cityName, /*$todaysDate, */ $temp, $humidity, $wind,);
             $cardBody.append($card);
             $searchCityDiv.append($cardBody);
             $('.cityContainer').append($searchCityDiv);
@@ -127,7 +127,7 @@ $(document).ready(function () {
             let $uvIndex = $("<p>");
             $uvIndex.addClass("card-text uvIndex");
             $(".weatherFacts").append($uvIndex);
-            // UV index - states severity of the UV Index by color warning
+            // UV index color coordinated warning and written level of concern
             if (uvIndex > 0.01 & uvIndex < 3) {
                 //color turn green 
                 $uvIndex.addClass('success-color').text(`UV Index: Low Danger  + ${uvIndex}`);
@@ -153,7 +153,6 @@ $(document).ready(function () {
         // event.preventDefault();
         $(".5DayForecast").empty();
         $(".cityContainer").empty();
-        // var cityName = $("#city").val();
         var queryURLForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${APIKey}`
         $.ajax({
             url: queryURLForecast,
@@ -170,11 +169,9 @@ $(document).ready(function () {
                 let forecastDate = forecast.list[forecastIndex].dt_txt;
                 let forecastTemp = (parseInt(forecast.list[forecastIndex].main.temp) - 273.15) * 1.80 + 32;
                 let forecastHumidity = forecast.list[forecastIndex].main.humidity;
-
                 // console.log(forecast.list[forecastIndex].weather.icon);
                 // console.log(forecastWeatherURL);
                 // console.log(forecastIconDescription);
-
                 //  need to be added each time! 
                 let $forecastCol = $("<div>");
                 $forecastCol.addClass("col");
