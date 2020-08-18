@@ -16,6 +16,7 @@ $(document).ready(function () {
             $(".btnSearchHistory").append($searchedCityBtn);
         }
     }
+
     // Checks Local Storage
     function init() {
         let storedLocations = JSON.parse(localStorage.getItem("locations"));
@@ -25,13 +26,25 @@ $(document).ready(function () {
         renderSearchedCities();
     };
 
+    // create function that begins on click - will call various APIs and render information on screen
+    $(".search").on("submit", function () {
+        preventDefault();
+        var cityName = $("#city").val();
+        obtainWeather(cityName);
+        uvIndexFunction(cityName);
+        obtainForecast(cityName);
+        console.log(obtainWeather());
+        console.log(uvIndexFunction());
+        console.log(obtainForecast());
+    });
+
     // API key stored in a variable for easier access
     const APIKey = "84e00228b4110f0bb695057ef871a2b0";
-    // create function that begins on click
-    $(".search").on("submit", function (event) {
-        event.preventDefault()
+
+    function obtainWeather(cityName) {
+        // event.preventDefault()
         // set variables for easier ability to create values
-        var cityName = $("#city").val();
+        // var cityName = $("#city").val();
 
         // adds search history to buttons
         let locationsHistory = $("#city").val();
@@ -54,7 +67,7 @@ $(document).ready(function () {
         }).then(function (response) {
             // create several variables which will need to be called
             // city response
-            var cityName = response.name;
+            // var cityName = response.name;
             // todays date
             // var todaysDate = moment().format("MMM Do YY").val();
             // temp in F.
@@ -99,9 +112,8 @@ $(document).ready(function () {
             // console.log("Temperature (F): " + temp);
             // console.log(lon);
             // console.log(lat);
-            // Attempt to have local storage
         });
-    });
+    }
 
     function uvIndexFunction(lat, lon) {
         // event.preventDefault()
@@ -137,11 +149,11 @@ $(document).ready(function () {
     }
 
     // 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-    $(".search").on("submit", function (event) {
-        event.preventDefault();
+    function obtainForecast(cityName) {
+        // event.preventDefault();
         $(".5DayForecast").empty();
         $(".cityContainer").empty();
-        var cityName = $("#city").val();
+        // var cityName = $("#city").val();
         var queryURLForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${APIKey}`
         $.ajax({
             url: queryURLForecast,
@@ -188,5 +200,5 @@ $(document).ready(function () {
                 $(".forecast").show();
             }
         });
-    });
+    }
 });
