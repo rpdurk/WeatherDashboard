@@ -95,19 +95,19 @@ $(document).ready(function() {
             // UV index - states severity of the UV Index by color warning
             if (uvIndex > 0.01 & uvIndex < 3) {
                 //color turn green 
-                $uvIndex.addClass('success-color').text(`${"UV Index: " + uvIndex}`);
+                $uvIndex.addClass('success-color').text(`UV Index: Low Danger  + ${uvIndex}`);
             } else if (uvIndex > 3 & uvIndex < 6) {
                 // color turns yellow 
-                $uvIndex.addClass('yellow accent-1').text(`${"UV Index: " + uvIndex}`);
+                $uvIndex.addClass('yellow accent-1').text(`UV Index: Moderate to High Danger  ${uvIndex}`);
             } else if (uvIndex > 6  & uvIndex < 8) {
                 // color turns orange 
-                $uvIndex.addClass('warning-color').text(`${"UV Index: " + uvIndex}`);
+                $uvIndex.addClass('warning-color').text(`UV Index: Moderate to High Danger  ${uvIndex}`);
             } else if (uvIndex > 8 & uvIndex < 11) {
                 // color turns red 
-                $uvIndex.addClass('danger-color').text(`${"UV Index: " + uvIndex}`);
+                $uvIndex.addClass('danger-color').text(`UV Index: Very High to Extreme Danger  ${uvIndex}`);
             } else if (uvIndex > 11) {
                 // color turns purple 
-                $uvIndex.addClass('secondary-color').text(`${"UV Index: " + uvIndex}`);
+                $uvIndex.addClass('secondary-color').text(`UV Index: Very High to Extreme Danger  ${uvIndex}`);
             }
             return uvIndex;
         });
